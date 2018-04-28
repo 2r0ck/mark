@@ -1,0 +1,10 @@
+E:\Develop\WorkDevelopment\mark\DotNetGigs\bin\Debug\netcoreapp2.0\DotNetGigs.deps.json
+E:\Develop\WorkDevelopment\mark\DotNetGigs\bin\Debug\netcoreapp2.0\DotNetGigs.runtimeconfig.json
+E:\Develop\WorkDevelopment\mark\DotNetGigs\bin\Debug\netcoreapp2.0\DotNetGigs.runtimeconfig.dev.json
+E:\Develop\WorkDevelopment\mark\DotNetGigs\bin\Debug\netcoreapp2.0\DotNetGigs.dll
+E:\Develop\WorkDevelopment\mark\DotNetGigs\bin\Debug\netcoreapp2.0\DotNetGigs.pdb
+E:\Develop\WorkDevelopment\mark\DotNetGigs\obj\Debug\netcoreapp2.0\DotNetGigs.csproj.CoreCompileInputs.cache
+E:\Develop\WorkDevelopment\mark\DotNetGigs\obj\Debug\netcoreapp2.0\DotNetGigs.AssemblyInfoInputs.cache
+E:\Develop\WorkDevelopment\mark\DotNetGigs\obj\Debug\netcoreapp2.0\DotNetGigs.AssemblyInfo.cs
+E:\Develop\WorkDevelopment\mark\DotNetGigs\obj\Debug\netcoreapp2.0\DotNetGigs.dll
+E:\Develop\WorkDevelopment\mark\DotNetGigs\obj\Debug\netcoreapp2.0\DotNetGigs.pdb

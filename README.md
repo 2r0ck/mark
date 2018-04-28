@@ -25,3 +25,28 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+
+
+## Создание БД
+# Первичная инициализация
+
+ >dotnet ef migrations add initial
+ Создает по Контексту(AppDbContext) из Сборки(DotNetGigs) файлы миграции в папку Migration
+из Startup.cs
+ public void ConfigureServices(IServiceCollection services)
+        {            
+ services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
+                b => b.MigrationsAssembly("DotNetGigs")));
+...
+
+
+ >dotnet ef database update 
+ Накатывает изменения миграции на БД
+
+## Это все еще не конец
+ https://fullstackmark.com/post/13/jwt-authentication-with-aspnet-core-2-web-api-angular-5-net-core-identity-and-facebook-login
+
+ 
+ остановился вот тут-> глава: Create the additional components
+
