@@ -28,11 +28,11 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 
 
-## Создание БД
-# Первичная инициализация
+## Data Base
+# Init
 
  >dotnet ef migrations add initial
- Создает по Контексту(AppDbContext) из Сборки(DotNetGigs) файлы миграции в папку Migration
+ Create by context(AppDbContext) from assembly (DotNetGigs) migration files (folder  Migration) 
 из Startup.cs
  public void ConfigureServices(IServiceCollection services)
         {            
@@ -42,11 +42,11 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 
  >dotnet ef database update 
- Накатывает изменения миграции на БД
+ Apply changes to DB
 
-## Это все еще не конец
+## Tutorial
  https://fullstackmark.com/post/13/jwt-authentication-with-aspnet-core-2-web-api-angular-5-net-core-identity-and-facebook-login
 
  
- остановился вот тут-> глава: Create the additional components
+ Marker -> charster:  Create the additional components
 
