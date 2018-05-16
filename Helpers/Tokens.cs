@@ -13,7 +13,7 @@ namespace DotNetGigs.Helpers
         {
             var response = new
             {
-                id = identity.Claims.Single(c => c.Type == Consts.ClaimIdRole).Value,
+                id = identity.Claims.Single(c => c.Type == ClaimRepository.ClaimTypes.IdClaim).Value,
                 auth_token = await jwtFactory.GenerateEncodedToken(userName, identity),
                 expires_in = (int)jwtOptions.ValidFor.TotalSeconds
             };

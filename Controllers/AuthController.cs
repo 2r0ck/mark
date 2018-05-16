@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using System.Security.Principal;
 using System.Threading.Tasks;
 using DotNetGigs.Auth;
 using DotNetGigs.Helpers;
@@ -56,8 +57,11 @@ namespace DotNetGigs.Controllers
 
             // check the credentials
             if (await _userManager.CheckPasswordAsync(userToVerify, password))
-            {
-                return await Task.FromResult(_jwtFactory.GenerateClaimsIdentity(userName, userToVerify.Id));
+            {                
+                //return await Task.FromResult(_jwtFactory.GenerateClaimsIdentity(userName, userToVerify.Id));
+                //выше была какая то хуня
+                var claims = await _userManager.GetClaimsAsync(userToVerify);
+                return await Task.FromResult<ClaimsIdentity>(new ClaimsIdentity(new GenericIdentity(userName, "Token"),claims));
             }
 
             // Credentials are invalid, or account doesn't exist

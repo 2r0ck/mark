@@ -53,8 +53,8 @@ namespace DotNetGigs.Auth
                  new Claim(JwtRegisteredClaimNames.Sub, userName),
                  new Claim(JwtRegisteredClaimNames.Jti, await _jwtOptions.JtiGenerator()),
                  new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(_jwtOptions.IssuedAt).ToString(), ClaimValueTypes.Integer64),
-                 identity.FindFirst(Consts.ClaimIdRole),
-                 identity.FindFirst(Consts.ClaimAdninRole)
+                 identity.FindFirst(ClaimRepository.ClaimTypes.IdClaim),
+                 identity.FindFirst(ClaimRepository.ClaimTypes.AccessClaim)
              };
 
             // Create the JWT security token and encode it.
@@ -75,11 +75,12 @@ namespace DotNetGigs.Auth
 
          public ClaimsIdentity GenerateClaimsIdentity(string userName, string id)
         {
-            return new ClaimsIdentity(new GenericIdentity(userName, "Token"), new[]
-            {
-                new Claim(Consts.ClaimIdRole, id),
-                new Claim(Consts.ClaimAdninRole, Consts.AdminRoleClaimValue)
-            });
+            // return new ClaimsIdentity(new GenericIdentity(userName, "Token"), new[]
+            // {
+            //     new Claim(Consts.ClaimIdRole, id),
+            //     new Claim(Consts.ClaimAdninRole, Consts.AdminRoleClaimValue)
+            // });
+            return null;
         }
 
     }

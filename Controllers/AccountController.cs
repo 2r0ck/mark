@@ -40,13 +40,20 @@ namespace DotNetGigs.Controllers
             
             if (!result.Succeeded) return new BadRequestObjectResult(Errors.AddErrorsToModelState(result, ModelState));
             
-            await _userManager.AddClaimAsync(userIdentity, new Claim(Consts.ClaimAdninRole,Consts.AdminRoleClaimValue ));
-            await _userManager.AddClaimAsync(userIdentity, new Claim(Consts.ClaimIdRole,userIdentity.Id  ));
-
+            await _userManager.AddClaimAsync(userIdentity, new Claim(ClaimRepository.ClaimTypes.IdClaim,userIdentity.Id ));
+           
+            //by default user only view           
+            if(model.UserName.Contains("admin"))
+            {
+                 await _userManager.AddClaimAsync(userIdentity, new Claim(ClaimRepository.ClaimTypes.AccessClaim, ClaimRepository.AccessClaimValues.ApiAccess));
+            }else{
+                 await _userManager.AddClaimAsync(userIdentity, new Claim(ClaimRepository.ClaimTypes.AccessClaim, ClaimRepository.AccessClaimValues.View));
+            }
             await _appDbContext.JobSeekers.AddAsync(new JobSeeker { IdentityId = userIdentity.Id, Location = model.Location });
             await _appDbContext.SaveChangesAsync();
 
             return new OkResult();
         }
+
     }
 }

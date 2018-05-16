@@ -12,12 +12,21 @@ namespace DotNetGigs.Controllers
     {
 
 
-        [HttpGet("userid")]
+        [HttpGet("userid_api")]
         [Authorize(Policy = "ApiUser")]
         public IActionResult getUserId()
         {
+            var idClaim = User.Claims.FirstOrDefault(x => x.Type == ClaimRepository.ClaimTypes.IdClaim);
+            if (idClaim == null)
+                return new BadRequestObjectResult("User settings is invalid!");
+            return new OkObjectResult($"id: {idClaim.Value}");
+        }
 
-            var idClaim = User.Claims.FirstOrDefault(x => x.Type == Consts.ClaimIdRole);
+         [HttpGet("userid_view")]
+        [Authorize(Policy = "ViewUser")]
+        public IActionResult getUserIdView()
+        {
+            var idClaim = User.Claims.FirstOrDefault(x => x.Type == ClaimRepository.ClaimTypes.IdClaim);
             if (idClaim == null)
                 return new BadRequestObjectResult("User settings is invalid!");
             return new OkObjectResult($"id: {idClaim.Value}");

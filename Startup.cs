@@ -122,11 +122,9 @@ namespace DotNetGigs
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("ApiUser", policy => policy.RequireClaim(Consts.ClaimAdninRole, Consts.AdminRoleClaimValue));
+                options.AddPolicy("ViewUser", policy => policy.RequireClaim(ClaimRepository.ClaimTypes.AccessClaim, ClaimRepository.AccessClaimValues.View));
+                options.AddPolicy("ApiUser", policy => policy.RequireClaim(ClaimRepository.ClaimTypes.AccessClaim, ClaimRepository.AccessClaimValues.ApiAccess));                
             });
-
-
-
 
         }
 
@@ -167,7 +165,7 @@ namespace DotNetGigs
             app.UseStaticFiles();
             
             
-            //роутинг чтобы работали ссылочи SPA
+            //роутинг чтобы работали ссылки SPA
             //
             app.UseMvc(r =>
             {
