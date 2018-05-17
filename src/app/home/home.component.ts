@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { UserAuthService } from '../services/user.auth.service';
+import { TestSerService } from "../services/test-ser.service";
 
 @Component({
   selector: 'app-home',
@@ -7,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  constructor(private  userService: TestSerService) { }
 
   ngOnInit() {
+  }
+
+  testConnection(){
+      //this.userService.testConnect();
+
+       this.userService.do();
   }
 
 }
