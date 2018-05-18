@@ -6,6 +6,7 @@ import { Observable, BehaviorSubject,of } from 'rxjs';
 
 import { UserRegistration } from '../models/user.registration';
 import { catchError, map, tap } from 'rxjs/operators';
+import { TestData, AuthResponse } from "../models/csmodels";
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +14,9 @@ import { catchError, map, tap } from 'rxjs/operators';
 export class UserAuthService extends BaseService {
 
   private baseUrl = 'http://localhost:5000/api';
-  private account_UrlPart = '/account';
-  private test_Url = '/publicData';
+  private account_url = '/account';
+  private test_url = '/data/publicData';
+  private auth_url = '/auth/login';
 
   // Observable navItem source
   private _authNavStatusSource = new BehaviorSubject<boolean>(false);
@@ -34,11 +36,17 @@ export class UserAuthService extends BaseService {
   }
 
 
-  public testConnect() { 
-     this.httpClient.get<any>(this.baseUrl + this.test_Url)
+  public testConnect(): Observable<TestData>  {
+     return this.httpClient.get<TestData>(this.baseUrl + this.test_url)
      .pipe(tap(r => console.log(`success->` + r)), catchError(super.handleOperationError<any>('test')));
   }
-
+  
+  private getRequestOptions(){
+     return {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json'
+      })};
+   }
 
 
   //  register(email: string, password: string, firstName: string, lastName: string,location: string): Observable<UserRegistration> {
@@ -50,12 +58,23 @@ export class UserAuthService extends BaseService {
   //     .map(res => true)
   //     .catch(this.handleError);
   // }
+  register(email: string,
+            password: string,
+            firstName: string,
+            lastName: string,
+            location: string): Observable<boolean> {
+      let body = JSON.stringify({ email, password, firstName, lastName, location });
+      let options = this.getRequestOptions();
 
+      return this.httpClient
+        .post<boolean>(this.baseUrl + this.account_url, body, options)
+        .pipe(map(res => true),catchError(super.unsafeHandleOperationError<boolean>('register')));
+  }
   //  login(userName, password) {
   //   let headers = new Headers();
   //   headers.append('Content-Type', 'application/json');
 
-  //   return this.http
+  //   return this.httpClient
   //     .post(
   //     this.baseUrl + '/auth/login',
   //     JSON.stringify({ userName, password }),{ headers }
@@ -68,17 +87,33 @@ export class UserAuthService extends BaseService {
   //       return true;
   //     })
   //     .catch(this.handleError);
+
   // }
 
-  // logout() {
-  //   localStorage.removeItem('auth_token');
-  //   this.loggedIn = false;
-  //   this._authNavStatusSource.next(false);
-  // }
+   login(userName, password): Observable<boolean> {
+    let httpOptions = this.getRequestOptions();
+    let body = JSON.stringify({ userName, password });
+    return this.httpClient
+       .post<AuthResponse>(this.baseUrl + this.auth_url,body,httpOptions)
+       .pipe(map(res=>{
+          localStorage.setItem('auth_token', res.auth_token);
+          this.loggedIn = true;
+          this._authNavStatusSource.next(true);
+          return true;
+       }),
+       catchError(super.handleOperationError<boolean>('login',false))
+      );
+    }
 
-  // isLoggedIn() {
-  //   return this.loggedIn;
-  // }
+    logout() {
+      localStorage.removeItem('auth_token');
+      this.loggedIn = false;
+      this._authNavStatusSource.next(false);
+    }
+
+    isLoggedIn() {
+      return this.loggedIn;
+    }
 
   // facebookLogin(accessToken:string) {
   //   let headers = new Headers();

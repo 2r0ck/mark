@@ -3,12 +3,15 @@ import { CommonModule } from '@angular/common';
 import { RegistrationFormComponent } from './registration-form/registration-form.component';
 import { LoginComponent } from './login/login.component';
 import { routing } from './account.routing';
+import { FormsModule } from '@angular/forms';
+import { SpinnerComponent } from "../spinner/spinner.component";
 
 @NgModule({
   imports: [
     CommonModule,
-    routing
+    FormsModule,
+    routing    
   ],
-  declarations: [RegistrationFormComponent, LoginComponent]
+  declarations: [RegistrationFormComponent, LoginComponent, SpinnerComponent]
 })
 export class AccountModule { }

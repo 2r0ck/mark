@@ -1,8 +1,10 @@
 using System.Linq;
 using System.Threading.Tasks;
 using DotNetGigs.Helpers;
+using DotNetGigs.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace DotNetGigs.Controllers
 {
@@ -37,7 +39,10 @@ namespace DotNetGigs.Controllers
         public IActionResult getpublicData()
         {
 
-            return new OkObjectResult($" publicData !");
+            return new OkObjectResult(JsonConvert.SerializeObject(new TestData(){
+                Id=1,
+                Value = "success!"
+            }));
         }
 
 

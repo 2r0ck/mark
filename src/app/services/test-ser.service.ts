@@ -6,6 +6,7 @@ import { Http } from '@angular/http';
 import { Observable, BehaviorSubject, of } from 'rxjs';
 
 import { catchError, map, tap } from 'rxjs/operators';
+import { TestData } from "../models/csmodels";
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class TestSerService {
 
 
   do() {
-    console.log("test do!");
+    /*console.log("test do!");
     let url = this.baseUrl + this.test_Url;
     //this.httpClient.
 
@@ -33,6 +34,20 @@ export class TestSerService {
           console.log(res);
       });
     //.pipe(tap(r => console.log(`success->` + r)), catchError(this.handleOperationError<any>('test')));
+*/
+  let url = this.baseUrl + this.test_Url;
+  var query=this.httpClient
+  .get<TestData>(url)
+  .pipe(
+    tap(r => console.log(`success->` + r)), 
+    catchError(this.handleOperationError<any>('test')));
+
+  query.subscribe(res => {
+          console.log("subscr: ");
+          console.log(res);
+        });
+
+
   }
 
   protected handleOperationError<T>(operation = 'operation', result?: T) {

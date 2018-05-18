@@ -11,7 +11,7 @@ namespace DotNetGigs.Helpers
     {
         public static async Task<string> GenerateJwt(ClaimsIdentity identity, IJwtFactory jwtFactory, string userName, JwtIssuerOptions jwtOptions, JsonSerializerSettings serializerSettings)
         {
-            var response = new
+            var response = new AuthResponse()
             {
                 id = identity.Claims.Single(c => c.Type == ClaimRepository.ClaimTypes.IdClaim).Value,
                 auth_token = await jwtFactory.GenerateEncodedToken(userName, identity),

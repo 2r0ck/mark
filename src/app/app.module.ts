@@ -10,7 +10,8 @@ import { routing } from './app.routing';
 import { AccountModule } from './account/account.module';
 import { NotfoundComponent } from './notfound/notfound.component';
 import { FormsModule } from '@angular/forms';
-import { HttpModule, XHRBackend } from '@angular/http';
+ 
+
 
 
 @NgModule({
@@ -20,14 +21,14 @@ import { HttpModule, XHRBackend } from '@angular/http';
     HomeComponent,
     BusyComponent,
     NotfoundComponent
+  
   ],
   imports: [
     BrowserModule,
     routing,
     AccountModule,
     HttpClientModule,
-    FormsModule,
-    HttpModule
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -43,7 +43,7 @@ namespace DotNetGigs.Controllers
             await _userManager.AddClaimAsync(userIdentity, new Claim(ClaimRepository.ClaimTypes.IdClaim,userIdentity.Id ));
            
             //by default user only view           
-            if(model.UserName.Contains("admin"))
+            if(model.Email.Contains("admin"))
             {
                  await _userManager.AddClaimAsync(userIdentity, new Claim(ClaimRepository.ClaimTypes.AccessClaim, ClaimRepository.AccessClaimValues.ApiAccess));
             }else{

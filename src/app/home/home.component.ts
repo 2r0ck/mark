@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserAuthService } from '../services/user.auth.service';
-import { TestSerService } from "../services/test-ser.service";
+import { TestSerService } from '../services/test-ser.service';
 
 @Component({
   selector: 'app-home',
@@ -9,7 +9,7 @@ import { TestSerService } from "../services/test-ser.service";
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private  userService: TestSerService) { }
+  constructor(private  userService: UserAuthService) { }
 
   ngOnInit() {
   }
@@ -17,7 +17,8 @@ export class HomeComponent implements OnInit {
   testConnection(){
       //this.userService.testConnect();
 
-       this.userService.do();
+       //this.userService.testConnect().subscribe(res=>console.log(res));
+       this.userService.login('userAdmin@gmail.com','P@ssw0rd').subscribe(res=>console.log(`login: ${res}`));
   }
 
 }
