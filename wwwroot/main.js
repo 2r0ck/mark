@@ -40,12 +40,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _account_routing__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./account.routing */ "./src/app/account/account.routing.ts");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
 /* harmony import */ var _spinner_spinner_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../spinner/spinner.component */ "./src/app/spinner/spinner.component.ts");
+/* harmony import */ var _facebook_login_facebook_login_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./facebook-login/facebook-login.component */ "./src/app/account/facebook-login/facebook-login.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -63,7 +65,7 @@ var AccountModule = /** @class */ (function () {
                 _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormsModule"],
                 _account_routing__WEBPACK_IMPORTED_MODULE_4__["routing"]
             ],
-            declarations: [_registration_form_registration_form_component__WEBPACK_IMPORTED_MODULE_2__["RegistrationFormComponent"], _login_login_component__WEBPACK_IMPORTED_MODULE_3__["LoginComponent"], _spinner_spinner_component__WEBPACK_IMPORTED_MODULE_6__["SpinnerComponent"]]
+            declarations: [_registration_form_registration_form_component__WEBPACK_IMPORTED_MODULE_2__["RegistrationFormComponent"], _login_login_component__WEBPACK_IMPORTED_MODULE_3__["LoginComponent"], _spinner_spinner_component__WEBPACK_IMPORTED_MODULE_6__["SpinnerComponent"], _facebook_login_facebook_login_component__WEBPACK_IMPORTED_MODULE_7__["FacebookLoginComponent"]]
         })
     ], AccountModule);
     return AccountModule;
@@ -86,13 +88,122 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 /* harmony import */ var _registration_form_registration_form_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./registration-form/registration-form.component */ "./src/app/account/registration-form/registration-form.component.ts");
 /* harmony import */ var _login_login_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./login/login.component */ "./src/app/account/login/login.component.ts");
+/* harmony import */ var _facebook_login_facebook_login_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./facebook-login/facebook-login.component */ "./src/app/account/facebook-login/facebook-login.component.ts");
+
 
 
 
 var routing = _angular_router__WEBPACK_IMPORTED_MODULE_0__["RouterModule"].forChild([
     { path: 'register', component: _registration_form_registration_form_component__WEBPACK_IMPORTED_MODULE_1__["RegistrationFormComponent"] },
-    { path: 'login', component: _login_login_component__WEBPACK_IMPORTED_MODULE_2__["LoginComponent"] }
+    { path: 'login', component: _login_login_component__WEBPACK_IMPORTED_MODULE_2__["LoginComponent"] },
+    { path: 'facebook-login', component: _facebook_login_facebook_login_component__WEBPACK_IMPORTED_MODULE_3__["FacebookLoginComponent"] }
 ]);
+
+
+/***/ }),
+
+/***/ "./src/app/account/facebook-login/facebook-login.component.html":
+/*!**********************************************************************!*\
+  !*** ./src/app/account/facebook-login/facebook-login.component.html ***!
+  \**********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"row\">\n    <div class=\"col-md-6\">\n        <a *ngIf=\"!isRequesting\" href=\"javascript:void(0)\" (click)=\"launchFbLogin()\"> <img class=\"img-fluid\" src=\"/assets/facebook-login.png\" /></a>\n        <app-spinner [isRunning]=\"isRequesting\"></app-spinner>\n        <div *ngIf=\"failed\" class=\"alert alert-danger\" role=\"alert\">\n            <p><strong>Oops!</strong> Your facebook login failed.</p>\n            <ul>\n                <li>Error: {{error}}</li>\n                <li>Description: {{errorDescription}}</li>\n            </ul>\n        </div>\n    </div>\n</div>"
+
+/***/ }),
+
+/***/ "./src/app/account/facebook-login/facebook-login.component.scss":
+/*!**********************************************************************!*\
+  !*** ./src/app/account/facebook-login/facebook-login.component.scss ***!
+  \**********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ""
+
+/***/ }),
+
+/***/ "./src/app/account/facebook-login/facebook-login.component.ts":
+/*!********************************************************************!*\
+  !*** ./src/app/account/facebook-login/facebook-login.component.ts ***!
+  \********************************************************************/
+/*! exports provided: FacebookLoginComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FacebookLoginComponent", function() { return FacebookLoginComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _services_user_auth_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/user.auth.service */ "./src/app/services/user.auth.service.ts");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var FacebookLoginComponent = /** @class */ (function () {
+    function FacebookLoginComponent(userService, router) {
+        this.userService = userService;
+        this.router = router;
+        if (window.addEventListener) {
+            window.addEventListener("message", this.handleMessage.bind(this), false);
+        }
+        else {
+            window.attachEvent("onmessage", this.handleMessage.bind(this));
+        }
+        ;
+    }
+    FacebookLoginComponent.prototype.launchFbLogin = function () {
+        this.authWindow = window.open('https://www.facebook.com/v2.11/dialog/oauth?&response_type=token&display=popup&client_id=1528751870549294&display=popup&redirect_uri=http://localhost:5000/facebook-auth.html&scope=email', null, 'width=600,height=400');
+    };
+    FacebookLoginComponent.prototype.handleMessage = function (event) {
+        var _this = this;
+        var message = event;
+        // Only trust messages from the below origin.
+        if (message.origin !== "http://localhost:5000")
+            return;
+        this.authWindow.close();
+        var result = JSON.parse(message.data);
+        if (!result.status) {
+            this.failed = true;
+            this.error = result.error;
+            this.errorDescription = result.errorDescription;
+        }
+        else {
+            this.failed = false;
+            this.isRequesting = true;
+            this.userService.facebookLogin(result.accessToken)
+                .subscribe(function (result) {
+                _this.isRequesting = false;
+                if (result) {
+                    _this.router.navigate(['/dashboard/home']);
+                }
+            }, function (error) {
+                _this.isRequesting = false;
+                _this.failed = true;
+                _this.error = error;
+            });
+        }
+    };
+    FacebookLoginComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-facebook-login',
+            template: __webpack_require__(/*! ./facebook-login.component.html */ "./src/app/account/facebook-login/facebook-login.component.html"),
+            styles: [__webpack_require__(/*! ./facebook-login.component.scss */ "./src/app/account/facebook-login/facebook-login.component.scss")]
+        }),
+        __metadata("design:paramtypes", [_services_user_auth_service__WEBPACK_IMPORTED_MODULE_1__["UserAuthService"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"]])
+    ], FacebookLoginComponent);
+    return FacebookLoginComponent;
+}());
+
 
 
 /***/ }),
@@ -513,7 +624,7 @@ var BusyComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-expand-lg navbar-light bg-light\">\n    <a class=\"navbar-brand\" href=\"#\">Navbar</a>\n    <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarSupportedContent\" aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n\n    <div class=\"navbar navbar-expand-md navbar-dark fixed-top bg-dark\" id=\"navbarSupportedContent\">\n        <ul class=\"navbar-nav mr-auto\">\n            <li class=\"nav-item active\">\n                <a class=\"nav-link\" routerLinkActive=\"active\" routerLink=\"/home\">dotnetGigs <span class=\"sr-only\">(current)</span></a>\n            </li>\n\n            <li class=\"nav-item\" *ngIf=\"!status\">\n                <a class=\"nav-link\" routerLinkActive=\"active\" routerLink=\"/login\">login</a>\n            </li>\n\n            <li class=\"nav-item\" *ngIf=\"!status\">\n                <a class=\"nav-link\" routerLinkActive=\"active\" routerLink=\"/register\">register</a>\n            </li>\n\n            <li class=\"nav-item\" *ngIf=\"status\">\n                <a class=\"nav-link\" (click)=\"logout()\" href=\"#\">Logoff</a>\n            </li>\n\n        </ul>\n        <form class=\"form-inline my-2 my-lg-0\">\n            <input class=\"form-control mr-sm-2\" type=\"search\" placeholder=\"Search\" aria-label=\"Search\">\n            <button class=\"btn btn-outline-success my-2 my-sm-0\" type=\"submit\">Search</button>\n        </form>\n    </div>\n</nav>"
+module.exports = "<nav class=\"navbar navbar-expand-lg navbar-light bg-light\">\n    <a class=\"navbar-brand\" href=\"#\">Navbar</a>\n    <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarSupportedContent\" aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n\n    <div class=\"navbar navbar-expand-md navbar-dark fixed-top bg-dark\" id=\"navbarSupportedContent\">\n        <ul class=\"navbar-nav mr-auto\">\n            <li class=\"nav-item active\">\n                <a class=\"nav-link\" routerLinkActive=\"active\" routerLink=\"/home\">dotnetGigs <span class=\"sr-only\">(current)</span></a>\n            </li>\n\n            <li class=\"nav-item\" *ngIf=\"!status\">\n                <a class=\"nav-link\" routerLinkActive=\"active\" routerLink=\"/login\">login</a>\n            </li>\n\n            <li class=\"nav-item\" *ngIf=\"!status\">\n                <a class=\"nav-link\" routerLinkActive=\"active\" routerLink=\"/register\">register</a>\n            </li>\n\n            <li class=\"nav-item\" *ngIf=\"status\">\n                <a class=\"nav-link\" (click)=\"logout()\" href=\"#\">Logoff</a>\n            </li>\n\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" routerLinkActive=\"active\" routerLink=\"/facebook-login\">Facebook signup/login</a>\n            </li>\n\n        </ul>\n        <form class=\"form-inline my-2 my-lg-0\">\n            <input class=\"form-control mr-sm-2\" type=\"search\" placeholder=\"Search\" aria-label=\"Search\">\n            <button class=\"btn btn-outline-success my-2 my-sm-0\" type=\"submit\">Search</button>\n        </form>\n    </div>\n</nav>"
 
 /***/ }),
 
@@ -842,6 +953,7 @@ var UserAuthService = /** @class */ (function (_super) {
         _this.test_urlapi = '/data/userid_api';
         _this.test_urlview = '/data/userid_view';
         _this.auth_url = '/auth/login';
+        _this.face_url = '/externalauth/facebook';
         // Observable navItem source
         _this._authNavStatusSource = new rxjs__WEBPACK_IMPORTED_MODULE_3__["BehaviorSubject"](false);
         // Observable navItem stream
@@ -870,6 +982,7 @@ var UserAuthService = /** @class */ (function (_super) {
         if (withAuth && this.loggedIn) {
             return {
                 headers: new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpHeaders"]({
+                    'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + localStorage.getItem('auth_token')
                 })
             };
@@ -932,6 +1045,19 @@ var UserAuthService = /** @class */ (function (_super) {
     };
     UserAuthService.prototype.isLoggedIn = function () {
         return this.loggedIn;
+    };
+    UserAuthService.prototype.facebookLogin = function (accessToken) {
+        var _this = this;
+        var httpOptions = this.getRequestOptions();
+        var body = JSON.stringify({ accessToken: accessToken });
+        return this.httpClient
+            .post(this.baseUrl + this.face_url, body, httpOptions)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["map"])(function (res) {
+            localStorage.setItem('auth_token', res.auth_token);
+            _this.loggedIn = true;
+            _this._authNavStatusSource.next(true);
+            return true;
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(_super.prototype.unsafeHandleOperationError.call(this, 'login')));
     };
     UserAuthService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({

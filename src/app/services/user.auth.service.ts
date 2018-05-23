@@ -19,6 +19,7 @@ export class UserAuthService extends BaseService {
   private test_urlapi = '/data/userid_api';
   private test_urlview = '/data/userid_view';
   private auth_url = '/auth/login';
+  private face_url = '/externalauth/facebook';
 
   // Observable navItem source
   private _authNavStatusSource = new BehaviorSubject<boolean>(false);
@@ -58,6 +59,7 @@ export class UserAuthService extends BaseService {
     if (withAuth && this.loggedIn) {
       return {
         headers: new HttpHeaders({
+          'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + localStorage.getItem('auth_token')
         })
       };
@@ -124,7 +126,7 @@ export class UserAuthService extends BaseService {
         this._authNavStatusSource.next(true);
         return true;
       }),
-      catchError(super.unsafeHandleOperationError<boolean>('login'))
+        catchError(super.unsafeHandleOperationError<boolean>('login'))
       );
   }
 
@@ -138,20 +140,18 @@ export class UserAuthService extends BaseService {
     return this.loggedIn;
   }
 
-  // facebookLogin(accessToken:string) {
-  //   let headers = new Headers();
-  //   headers.append('Content-Type', 'application/json');
-  //   let body = JSON.stringify({ accessToken });  
-  //   return this.http
-  //     .post(
-  //     this.baseUrl + '/externalauth/facebook', body, { headers })
-  //     .map(res => res.json())
-  //     .map(res => {
-  //       localStorage.setItem('auth_token', res.auth_token);
-  //       this.loggedIn = true;
-  //       this._authNavStatusSource.next(true);
-  //       return true;
-  //     })
-  //     .catch(this.handleError);
-  // }
+  facebookLogin(accessToken: string) {
+    let httpOptions = this.getRequestOptions();
+    let body = JSON.stringify({ accessToken });
+    return this.httpClient
+      .post<AuthResponse>(this.baseUrl + this.face_url, body, httpOptions)
+      .pipe(map(res => {
+        localStorage.setItem('auth_token', res.auth_token);
+        this.loggedIn = true;
+        this._authNavStatusSource.next(true);
+        return true;
+      }),
+        catchError(super.unsafeHandleOperationError<boolean>('login'))
+      );
+  }
 }

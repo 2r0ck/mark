@@ -5,6 +5,7 @@ import { LoginComponent } from './login/login.component';
 import { routing } from './account.routing';
 import { FormsModule } from '@angular/forms';
 import { SpinnerComponent } from "../spinner/spinner.component";
+import { FacebookLoginComponent } from './facebook-login/facebook-login.component';
 
 @NgModule({
   imports: [
@@ -12,6 +13,6 @@ import { SpinnerComponent } from "../spinner/spinner.component";
     FormsModule,
     routing    
   ],
-  declarations: [RegistrationFormComponent, LoginComponent, SpinnerComponent]
+  declarations: [RegistrationFormComponent, LoginComponent, SpinnerComponent, FacebookLoginComponent]
 })
 export class AccountModule { }

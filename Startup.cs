@@ -79,6 +79,7 @@ namespace DotNetGigs
 
             //factory to DI
             services.AddSingleton<IJwtFactory, JwtFactory>();
+             services.Configure<FacebookAuthSettings>(Configuration.GetSection(nameof(FacebookAuthSettings)));
 
             //====read from cfg to model====
             //get
