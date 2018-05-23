@@ -21,7 +21,10 @@ namespace DotNetGigs.Controllers
             var idClaim = User.Claims.FirstOrDefault(x => x.Type == ClaimRepository.ClaimTypes.IdClaim);
             if (idClaim == null)
                 return new BadRequestObjectResult("User settings is invalid!");
-            return new OkObjectResult($"id: {idClaim.Value}");
+             return new OkObjectResult(JsonConvert.SerializeObject(new TestData(){
+                Id=1,
+                Value = "api"+idClaim.Value
+            }));
         }
 
          [HttpGet("userid_view")]
@@ -31,7 +34,10 @@ namespace DotNetGigs.Controllers
             var idClaim = User.Claims.FirstOrDefault(x => x.Type == ClaimRepository.ClaimTypes.IdClaim);
             if (idClaim == null)
                 return new BadRequestObjectResult("User settings is invalid!");
-            return new OkObjectResult($"id: {idClaim.Value}");
+            return new OkObjectResult(JsonConvert.SerializeObject(new TestData(){
+                Id=1,
+                Value = "view"+idClaim.Value
+            }));
         }
 
 

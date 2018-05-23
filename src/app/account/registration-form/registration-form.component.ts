@@ -28,9 +28,9 @@ errors: string;
                   .subscribe(
                     result  => {
                       this.isRequesting = false;
-                      console.log(`register ${result}`);
+                      console.log(`register ${result}!`);
                       if(result){
-                      //  this.router.navigate(['/login'],{queryParams: {brandNew: true,email:value.email}});                         
+                        this.router.navigate(['/login'], { queryParams: {brandNew: true, email: value.email}});
                     }
                   },
                   error => {

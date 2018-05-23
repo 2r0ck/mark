@@ -62,8 +62,8 @@ namespace DotNetGigs.Auth
                 issuer: _jwtOptions.Issuer,
                 audience: _jwtOptions.Audience,
                 claims: claims,
-                notBefore: _jwtOptions.NotBefore,
-                expires: _jwtOptions.Expiration,
+                notBefore: DateTime.Now,//_jwtOptions.NotBefore,
+                expires: DateTime.Now.AddSeconds(_jwtOptions.ValidFor.TotalSeconds),//_jwtOptions.Expiration,
                 signingCredentials: _jwtOptions.SigningCredentials);
 
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);

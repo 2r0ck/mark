@@ -18,7 +18,21 @@ export class HomeComponent implements OnInit {
       //this.userService.testConnect();
 
        //this.userService.testConnect().subscribe(res=>console.log(res));
-       this.userService.login('userAdmin@gmail.com','P@ssw0rd').subscribe(res=>console.log(`login: ${res}`));
+       this.userService.testConnect().subscribe(res=>console.log(`test: ${res.Value}`));
+  }
+
+  testConnection2(){
+      //this.userService.testConnect();
+
+       //this.userService.testConnect().subscribe(res=>console.log(res));
+       this.userService.testConnectView().subscribe(res=>console.log(`test pro: ${res.Value}`));
+  }
+
+   testConnection3(){
+      //this.userService.testConnect();
+
+       //this.userService.testConnect().subscribe(res=>console.log(res));
+       this.userService.testConnectApi().subscribe(res=>console.log(`test pro: ${res.Value}`));
   }
 
 }

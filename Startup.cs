@@ -23,6 +23,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 namespace DotNetGigs
@@ -69,7 +70,7 @@ namespace DotNetGigs
             builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), builder.Services);
             builder.AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
-
+            IdentityModelEventSource.ShowPII = true; //для показа времени в логах
 
 
             services.AddAutoMapper();
@@ -88,6 +89,7 @@ namespace DotNetGigs
                 options.Issuer = jwtOpt[nameof(JwtIssuerOptions.Issuer)];
                 options.Audience = jwtOpt[nameof(JwtIssuerOptions.Audience)];
                 options.SigningCredentials = new SigningCredentials(_signingKey, SecurityAlgorithms.HmacSha256);
+                
             });
             //=============================
 
@@ -108,6 +110,8 @@ namespace DotNetGigs
                 ValidateLifetime = true,
                 ClockSkew = TimeSpan.Zero
             };
+
+            
             //===Add JWT auth
             services.AddAuthentication(options =>
             {

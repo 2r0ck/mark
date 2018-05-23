@@ -104,7 +104,7 @@ var routing = _angular_router__WEBPACK_IMPORTED_MODULE_0__["RouterModule"].forCh
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  login works!\n</p>\n"
+module.exports = "<div class=\"row\">\n    <div class=\"col-md-6 new-user-alert\">\n        <div *ngIf=\"brandNew\" class=\"alert alert-success\" role=\"alert\">\n            <strong>All set!</strong> Please login with your account\n        </div>\n        <h2>Login</h2>\n    </div>\n</div>\n\n<div class=\"row\">\n    <div class=\"col-md-6\">\n        <form #f=\"ngForm\" novalidate (ngSubmit)=\"login(f)\">\n\n            <div class=\"form-group\">\n                <label for=\"email\">Email</label>\n                <input id=\"email\" type=\"text\" required name=\"email\" class=\"form-control\" placeholder=\"Email\" [ngModel]=\"credentials.email\" #email=\"ngModel\" tmFocus validateEmail>\n                <small [hidden]=\"email.valid || (email.pristine && !submitted)\" class=\"text-danger\">Please enter a valid email</small>\n            </div>\n            <div class=\"form-group\">\n                <label for=\"password\">Password</label>\n                <input type=\"password\" class=\"form-control\" id=\"password\" required name=\"password\" placeholder=\"Password\" ngModel>\n            </div>\n\n            <div class=\"form-group\">\n                <!-- [disabled]=\"f.invalid || isRequesting\"  -->\n                <button type=\"submit\" class=\"btn btn-primary\">Login</button>\n                <app-spinner [isRunning]=\"isRequesting\"></app-spinner>\n            </div>\n\n            <div *ngIf=\"errors\" class=\"alert alert-danger\" role=\"alert\">\n                <strong>Oops!</strong> {{errors}}\n            </div>\n\n        </form>\n\n\n    </div>\n</div>"
 
 /***/ }),
 
@@ -115,7 +115,7 @@ module.exports = "<p>\n  login works!\n</p>\n"
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ""
+module.exports = ".new-user-alert {\n  padding-top: 2.5rem; }\n"
 
 /***/ }),
 
@@ -130,6 +130,8 @@ module.exports = ""
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoginComponent", function() { return LoginComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _services_user_auth_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../services/user.auth.service */ "./src/app/services/user.auth.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -140,10 +142,49 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
 var LoginComponent = /** @class */ (function () {
-    function LoginComponent() {
+    function LoginComponent(userService, router, activatedRoute) {
+        this.userService = userService;
+        this.router = router;
+        this.activatedRoute = activatedRoute;
+        this.submitted = false;
+        this.credentials = { email: '', password: '' };
     }
     LoginComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        // subscribe to router event
+        this.subscription = this.activatedRoute.queryParams.subscribe(function (param) {
+            _this.brandNew = param['brandNew'];
+            _this.credentials.email = param['email'];
+        });
+        this.credentials.email = 'admin@gmail.com';
+        this.credentials.password = 'P@ssw0rd';
+    };
+    LoginComponent.prototype.ngOnDestroy = function () {
+        // prevent memory leak by unsubscribing
+        this.subscription.unsubscribe();
+    };
+    LoginComponent.prototype.login = function (_a) {
+        var _this = this;
+        var value = _a.value, valid = _a.valid;
+        this.submitted = true;
+        this.isRequesting = true;
+        this.errors = '';
+        //if (valid) {
+        //this.userService.login(value.email, value.password)
+        this.userService.login('admin@gmail.com', 'P@ssw0rd')
+            .subscribe(function (result) {
+            _this.isRequesting = false;
+            if (result) {
+                _this.router.navigate(['/home']);
+            }
+        }, function (error) {
+            _this.isRequesting = false;
+            _this.errors = error;
+        });
+        // }
     };
     LoginComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -151,7 +192,7 @@ var LoginComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./login.component.html */ "./src/app/account/login/login.component.html"),
             styles: [__webpack_require__(/*! ./login.component.scss */ "./src/app/account/login/login.component.scss")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [_services_user_auth_service__WEBPACK_IMPORTED_MODULE_2__["UserAuthService"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"]])
     ], LoginComponent);
     return LoginComponent;
 }());
@@ -225,9 +266,9 @@ var RegistrationFormComponent = /** @class */ (function () {
             this.userService.register(value.email, value.password, value.firstName, value.lastName, value.location)
                 .subscribe(function (result) {
                 _this.isRequesting = false;
-                console.log("register " + result);
+                console.log("register " + result + "!");
                 if (result) {
-                    //  this.router.navigate(['/login'],{queryParams: {brandNew: true,email:value.email}});                         
+                    _this.router.navigate(['/login'], { queryParams: { brandNew: true, email: value.email } });
                 }
             }, function (error) {
                 _this.isRequesting = false;
@@ -472,7 +513,7 @@ var BusyComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-expand-lg navbar-light bg-light\">\n    <a class=\"navbar-brand\" href=\"#\">Navbar</a>\n    <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarSupportedContent\" aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n\n    <div class=\"navbar navbar-expand-md navbar-dark fixed-top bg-dark\" id=\"navbarSupportedContent\">\n        <ul class=\"navbar-nav mr-auto\">\n            <li class=\"nav-item active\">\n                <a class=\"nav-link\" routerLinkActive=\"active\" routerLink=\"/home\">dotnetGigs <span class=\"sr-only\">(current)</span></a>\n            </li>\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" routerLinkActive=\"active\" routerLink=\"/login\">login</a>\n            </li>\n\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" routerLinkActive=\"active\" routerLink=\"/register\">account</a>\n            </li>\n            <!-- <li class=\"nav-item dropdown\">\n                <a class=\"nav-link dropdown-toggle\" href=\"#\" id=\"navbarDropdown\" role=\"button\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n          Dropdown\n        </a>\n                <div class=\"dropdown-menu\" aria-labelledby=\"navbarDropdown\">\n                    <a class=\"dropdown-item\" href=\"#\">Action</a>\n                    <a class=\"dropdown-item\" href=\"#\">Another action</a>\n                    <div class=\"dropdown-divider\"></div>\n                    <a class=\"dropdown-item\" href=\"#\">Something else here</a>\n                </div>\n            </li>\n            <li class=\"nav-item\">\n                <a class=\"nav-link disabled\" href=\"#\">Disabled</a>\n            </li> -->\n        </ul>\n        <form class=\"form-inline my-2 my-lg-0\">\n            <input class=\"form-control mr-sm-2\" type=\"search\" placeholder=\"Search\" aria-label=\"Search\">\n            <button class=\"btn btn-outline-success my-2 my-sm-0\" type=\"submit\">Search</button>\n        </form>\n    </div>\n</nav>"
+module.exports = "<nav class=\"navbar navbar-expand-lg navbar-light bg-light\">\n    <a class=\"navbar-brand\" href=\"#\">Navbar</a>\n    <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarSupportedContent\" aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n\n    <div class=\"navbar navbar-expand-md navbar-dark fixed-top bg-dark\" id=\"navbarSupportedContent\">\n        <ul class=\"navbar-nav mr-auto\">\n            <li class=\"nav-item active\">\n                <a class=\"nav-link\" routerLinkActive=\"active\" routerLink=\"/home\">dotnetGigs <span class=\"sr-only\">(current)</span></a>\n            </li>\n\n            <li class=\"nav-item\" *ngIf=\"!status\">\n                <a class=\"nav-link\" routerLinkActive=\"active\" routerLink=\"/login\">login</a>\n            </li>\n\n            <li class=\"nav-item\" *ngIf=\"!status\">\n                <a class=\"nav-link\" routerLinkActive=\"active\" routerLink=\"/register\">register</a>\n            </li>\n\n            <li class=\"nav-item\" *ngIf=\"status\">\n                <a class=\"nav-link\" (click)=\"logout()\" href=\"#\">Logoff</a>\n            </li>\n\n        </ul>\n        <form class=\"form-inline my-2 my-lg-0\">\n            <input class=\"form-control mr-sm-2\" type=\"search\" placeholder=\"Search\" aria-label=\"Search\">\n            <button class=\"btn btn-outline-success my-2 my-sm-0\" type=\"submit\">Search</button>\n        </form>\n    </div>\n</nav>"
 
 /***/ }),
 
@@ -498,6 +539,7 @@ module.exports = ""
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HeaderComponent", function() { return HeaderComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _services_user_auth_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../services/user.auth.service */ "./src/app/services/user.auth.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -508,10 +550,21 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
 var HeaderComponent = /** @class */ (function () {
-    function HeaderComponent() {
+    function HeaderComponent(userService) {
+        this.userService = userService;
     }
+    HeaderComponent.prototype.logout = function () {
+        this.userService.logout();
+    };
     HeaderComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.subscription = this.userService.authNavStatus$.subscribe(function (status) { return _this.status = status; });
+    };
+    HeaderComponent.prototype.ngOnDestroy = function () {
+        // prevent memory leak when component is destroyed
+        this.subscription.unsubscribe();
     };
     HeaderComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -519,7 +572,7 @@ var HeaderComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./header.component.html */ "./src/app/header/header.component.html"),
             styles: [__webpack_require__(/*! ./header.component.scss */ "./src/app/header/header.component.scss")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [_services_user_auth_service__WEBPACK_IMPORTED_MODULE_1__["UserAuthService"]])
     ], HeaderComponent);
     return HeaderComponent;
 }());
@@ -535,7 +588,7 @@ var HeaderComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n    home works!!\n    <button class=\"btn btn-default\" (click)=\"testConnection()\">Test Connect</button>\n</p>"
+module.exports = "<p>\n    home works!!\n    <button class=\"btn btn-default\" (click)=\"testConnection()\">Test Connect</button>\n    <button class=\"btn btn-primary\" (click)=\"testConnection2()\">View</button>\n    <button class=\"btn btn-danger\" (click)=\"testConnection3()\">Api</button>\n</p>"
 
 /***/ }),
 
@@ -582,7 +635,17 @@ var HomeComponent = /** @class */ (function () {
     HomeComponent.prototype.testConnection = function () {
         //this.userService.testConnect();
         //this.userService.testConnect().subscribe(res=>console.log(res));
-        this.userService.login('userAdmin@gmail.com', 'P@ssw0rd').subscribe(function (res) { return console.log("login: " + res); });
+        this.userService.testConnect().subscribe(function (res) { return console.log("test: " + res.Value); });
+    };
+    HomeComponent.prototype.testConnection2 = function () {
+        //this.userService.testConnect();
+        //this.userService.testConnect().subscribe(res=>console.log(res));
+        this.userService.testConnectView().subscribe(function (res) { return console.log("test pro: " + res.Value); });
+    };
+    HomeComponent.prototype.testConnection3 = function () {
+        //this.userService.testConnect();
+        //this.userService.testConnect().subscribe(res=>console.log(res));
+        this.userService.testConnectApi().subscribe(function (res) { return console.log("test pro: " + res.Value); });
     };
     HomeComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -776,6 +839,8 @@ var UserAuthService = /** @class */ (function (_super) {
         _this.baseUrl = 'http://localhost:5000/api';
         _this.account_url = '/account';
         _this.test_url = '/data/publicData';
+        _this.test_urlapi = '/data/userid_api';
+        _this.test_urlview = '/data/userid_view';
         _this.auth_url = '/auth/login';
         // Observable navItem source
         _this._authNavStatusSource = new rxjs__WEBPACK_IMPORTED_MODULE_3__["BehaviorSubject"](false);
@@ -789,10 +854,26 @@ var UserAuthService = /** @class */ (function (_super) {
         return _this;
     }
     UserAuthService.prototype.testConnect = function () {
-        return this.httpClient.get(this.baseUrl + this.test_url)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["tap"])(function (r) { return console.log("success->" + r); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(_super.prototype.handleOperationError.call(this, 'test')));
+        return this.httpClient.get(this.baseUrl + this.test_url, this.getRequestOptions(true))
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["tap"])(function (r) { return console.log("success->" + r); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(_super.prototype.unsafeHandleOperationError.call(this, 'testConnect')));
     };
-    UserAuthService.prototype.getRequestOptions = function () {
+    UserAuthService.prototype.testConnectApi = function () {
+        return this.httpClient.get(this.baseUrl + this.test_urlapi, this.getRequestOptions(true))
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["tap"])(function (r) { return console.log("success->" + r); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(_super.prototype.unsafeHandleOperationError.call(this, 'testConnectApi')));
+    };
+    UserAuthService.prototype.testConnectView = function () {
+        return this.httpClient.get(this.baseUrl + this.test_urlview, this.getRequestOptions(true))
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["tap"])(function (r) { return console.log("success->" + r); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(_super.prototype.unsafeHandleOperationError.call(this, 'testConnectView')));
+    };
+    UserAuthService.prototype.getRequestOptions = function (withAuth) {
+        if (withAuth === void 0) { withAuth = false; }
+        if (withAuth && this.loggedIn) {
+            return {
+                headers: new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpHeaders"]({
+                    'Authorization': 'Bearer ' + localStorage.getItem('auth_token')
+                })
+            };
+        }
         return {
             headers: new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpHeaders"]({
                 'Content-Type': 'application/json'
@@ -842,7 +923,7 @@ var UserAuthService = /** @class */ (function (_super) {
             _this.loggedIn = true;
             _this._authNavStatusSource.next(true);
             return true;
-        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(_super.prototype.handleOperationError.call(this, 'login', false)));
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(_super.prototype.unsafeHandleOperationError.call(this, 'login')));
     };
     UserAuthService.prototype.logout = function () {
         localStorage.removeItem('auth_token');

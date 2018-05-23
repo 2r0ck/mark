@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { BaseService } from './base.service';
-import { Observable, BehaviorSubject,of } from 'rxjs';
+import { Observable, BehaviorSubject, of } from 'rxjs';
 
 import { UserRegistration } from '../models/user.registration';
 import { catchError, map, tap } from 'rxjs/operators';
@@ -16,6 +16,8 @@ export class UserAuthService extends BaseService {
   private baseUrl = 'http://localhost:5000/api';
   private account_url = '/account';
   private test_url = '/data/publicData';
+  private test_urlapi = '/data/userid_api';
+  private test_urlview = '/data/userid_view';
   private auth_url = '/auth/login';
 
   // Observable navItem source
@@ -36,17 +38,38 @@ export class UserAuthService extends BaseService {
   }
 
 
-  public testConnect(): Observable<TestData>  {
-     return this.httpClient.get<TestData>(this.baseUrl + this.test_url)
-     .pipe(tap(r => console.log(`success->` + r)), catchError(super.handleOperationError<any>('test')));
+  public testConnect(): Observable<TestData> {
+    return this.httpClient.get<TestData>(this.baseUrl + this.test_url, this.getRequestOptions(true))
+      .pipe(tap(r => console.log(`success->` + r)), catchError(super.unsafeHandleOperationError<TestData>('testConnect')));
   }
-  
-  private getRequestOptions(){
-     return {
+
+  public testConnectApi(): Observable<TestData> {
+    return this.httpClient.get<TestData>(this.baseUrl + this.test_urlapi, this.getRequestOptions(true))
+      .pipe(tap(r => console.log(`success->` + r)), catchError(super.unsafeHandleOperationError<TestData>('testConnectApi')));
+  }
+
+  public testConnectView(): Observable<TestData> {
+    return this.httpClient.get<TestData>(this.baseUrl + this.test_urlview, this.getRequestOptions(true))
+      .pipe(tap(r => console.log(`success->` + r)), catchError(super.unsafeHandleOperationError<TestData>('testConnectView')));
+  }
+
+  private getRequestOptions(withAuth = false) {
+
+    if (withAuth && this.loggedIn) {
+      return {
+        headers: new HttpHeaders({
+          'Authorization': 'Bearer ' + localStorage.getItem('auth_token')
+        })
+      };
+    }
+    return {
       headers: new HttpHeaders({
-        'Content-Type':  'application/json'
-      })};
-   }
+        'Content-Type': 'application/json'
+      })
+    };
+
+
+  }
 
 
   //  register(email: string, password: string, firstName: string, lastName: string,location: string): Observable<UserRegistration> {
@@ -59,16 +82,16 @@ export class UserAuthService extends BaseService {
   //     .catch(this.handleError);
   // }
   register(email: string,
-            password: string,
-            firstName: string,
-            lastName: string,
-            location: string): Observable<boolean> {
-      let body = JSON.stringify({ email, password, firstName, lastName, location });
-      let options = this.getRequestOptions();
+    password: string,
+    firstName: string,
+    lastName: string,
+    location: string): Observable<boolean> {
+    let body = JSON.stringify({ email, password, firstName, lastName, location });
+    let options = this.getRequestOptions();
 
-      return this.httpClient
-        .post<boolean>(this.baseUrl + this.account_url, body, options)
-        .pipe(map(res => true),catchError(super.unsafeHandleOperationError<boolean>('register')));
+    return this.httpClient
+      .post<boolean>(this.baseUrl + this.account_url, body, options)
+      .pipe(map(res => true), catchError(super.unsafeHandleOperationError<boolean>('register')));
   }
   //  login(userName, password) {
   //   let headers = new Headers();
@@ -90,30 +113,30 @@ export class UserAuthService extends BaseService {
 
   // }
 
-   login(userName, password): Observable<boolean> {
+  login(userName, password): Observable<boolean> {
     let httpOptions = this.getRequestOptions();
     let body = JSON.stringify({ userName, password });
     return this.httpClient
-       .post<AuthResponse>(this.baseUrl + this.auth_url,body,httpOptions)
-       .pipe(map(res=>{
-          localStorage.setItem('auth_token', res.auth_token);
-          this.loggedIn = true;
-          this._authNavStatusSource.next(true);
-          return true;
-       }),
-       catchError(super.handleOperationError<boolean>('login',false))
+      .post<AuthResponse>(this.baseUrl + this.auth_url, body, httpOptions)
+      .pipe(map(res => {
+        localStorage.setItem('auth_token', res.auth_token);
+        this.loggedIn = true;
+        this._authNavStatusSource.next(true);
+        return true;
+      }),
+      catchError(super.unsafeHandleOperationError<boolean>('login'))
       );
-    }
+  }
 
-    logout() {
-      localStorage.removeItem('auth_token');
-      this.loggedIn = false;
-      this._authNavStatusSource.next(false);
-    }
+  logout() {
+    localStorage.removeItem('auth_token');
+    this.loggedIn = false;
+    this._authNavStatusSource.next(false);
+  }
 
-    isLoggedIn() {
-      return this.loggedIn;
-    }
+  isLoggedIn() {
+    return this.loggedIn;
+  }
 
   // facebookLogin(accessToken:string) {
   //   let headers = new Headers();
