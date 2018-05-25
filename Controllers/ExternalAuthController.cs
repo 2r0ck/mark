@@ -1,4 +1,7 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using DotNetGigs.Auth;
@@ -37,14 +40,35 @@ namespace DotNetGigs.Controllers
         [HttpPost]
         public async Task<IActionResult> Facebook([FromBody]FacebookAuthViewModel model)
         {
+             
+            var values = new Dictionary<string, string>();
+            values.Add("code",model.AccessToken);
+            values.Add("client_id","313078532206-b01t045uahrop8264g97jrnt1j2dmbrt.apps.googleusercontent.com");
+            values.Add("client_secret","YZjprBnuzhD1K31y3F4reKXj");
+            values.Add("redirect_uri","http://localhost:5000/facebook-auth.html");
+            values.Add("grant_type","authorization_code");
+            var appAccessTokenResponse = await Client.PostAsync("https://accounts.google.com/o/oauth2/token",  new FormUrlEncodedContent(values));
+            
+            if(appAccessTokenResponse.StatusCode == HttpStatusCode.OK){
+                    
+                    var res = await appAccessTokenResponse.Content.ReadAsStringAsync();
+                    var appAccessToken = JsonConvert.DeserializeObject<FacebookAppAccessToken>(res);
+
+            }
+
+           //https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=ya29.GlvGBZknEkqkc55IOBvM5n7LjYiOIyL0jDE8Vh_35cltZ6To7eDCvcYm1bEb-Dmpr1oCUe2iMNNeZ-d5cD2Fa6iSS6w97tRvuSXdRZ2FpU8uHuzYbEEuzQzEgkNk
+
+            return null;
             // 1.generate an app access token
-            var appAccessTokenResponse = await Client.GetStringAsync($"https://graph.facebook.com/oauth/access_token?client_id={_fbAuthSettings.AppId}&client_secret={_fbAuthSettings.AppSecret}&grant_type=client_credentials");
+          /*  var appAccessTokenResponse = await Client.GetStringAsync($"https://graph.facebook.com/oauth/access_token?client_id={_fbAuthSettings.AppId}&client_secret={_fbAuthSettings.AppSecret}&grant_type=client_credentials");
             var appAccessToken = JsonConvert.DeserializeObject<FacebookAppAccessToken>(appAccessTokenResponse);
             
             // 2. validate the user access token
             var userAccessTokenValidationResponse = await Client.GetStringAsync($"https://graph.facebook.com/debug_token?input_token={model.AccessToken}&access_token={appAccessToken.AccessToken}");
             var userAccessTokenValidation = JsonConvert.DeserializeObject<FacebookUserAccessTokenValidation>(userAccessTokenValidationResponse);
+*/
 
+/*
             if (!userAccessTokenValidation.Data.IsValid)
             {
                 return BadRequest(Errors.AddErrorToModelState("login_failure", "Invalid facebook token.", ModelState));
@@ -89,7 +113,13 @@ namespace DotNetGigs.Controllers
               _jwtFactory, localUser.UserName, _jwtOptions, new JsonSerializerSettings { Formatting = Formatting.Indented });
 
             return new OkObjectResult(jwt);
+            */
         }
+
+
+
+
+
     }
 
 }

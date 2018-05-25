@@ -12,7 +12,7 @@
 <body>
     <script>
         // if we don't receive an access token then login failed and/or the user has not connected properly
-        var accessToken = getParameterByName("access_token");
+        var accessToken = getParameterByName("code");
         var message = {};
         if (accessToken) {
             message.status = true;

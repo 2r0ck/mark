@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -55,7 +56,10 @@ namespace DotNetGigs
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
                 b => b.MigrationsAssembly("DotNetGigs")));
             //identity
-            services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
+            services
+            .AddMvc() //(options => { options.Filters.Add(new RequireHttpsAttribute());
+            .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
+            
 
             // add identity
             var builder = services.AddIdentityCore<AppUser>(o =>
@@ -79,7 +83,11 @@ namespace DotNetGigs
 
             //factory to DI
             services.AddSingleton<IJwtFactory, JwtFactory>();
-             services.Configure<FacebookAuthSettings>(Configuration.GetSection(nameof(FacebookAuthSettings)));
+            services.Configure<FacebookAuthSettings>(Configuration.GetSection(nameof(FacebookAuthSettings)));
+
+            services.Configure<GoogleAuthSettings>(Configuration.GetSection(nameof(GoogleAuthSettings)));
+
+
 
             //====read from cfg to model====
             //get
@@ -90,7 +98,7 @@ namespace DotNetGigs
                 options.Issuer = jwtOpt[nameof(JwtIssuerOptions.Issuer)];
                 options.Audience = jwtOpt[nameof(JwtIssuerOptions.Audience)];
                 options.SigningCredentials = new SigningCredentials(_signingKey, SecurityAlgorithms.HmacSha256);
-                
+
             });
             //=============================
 
@@ -112,7 +120,7 @@ namespace DotNetGigs
                 ClockSkew = TimeSpan.Zero
             };
 
-            
+
             //===Add JWT auth
             services.AddAuthentication(options =>
             {
@@ -125,11 +133,13 @@ namespace DotNetGigs
                 configureOptions.SaveToken = true;
             });
 
+
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("ViewUser", policy => policy.RequireClaim(ClaimRepository.ClaimTypes.AccessClaim, ClaimRepository.AccessClaimValues.View));
-                options.AddPolicy("ApiUser", policy => policy.RequireClaim(ClaimRepository.ClaimTypes.AccessClaim, ClaimRepository.AccessClaimValues.ApiAccess));                
+                options.AddPolicy("ApiUser", policy => policy.RequireClaim(ClaimRepository.ClaimTypes.AccessClaim, ClaimRepository.AccessClaimValues.ApiAccess));
             });
+            
 
         }
 
@@ -168,8 +178,8 @@ namespace DotNetGigs
             app.UseAuthentication();
             app.UseDefaultFiles();
             app.UseStaticFiles();
-            
-            
+
+
             //роутинг чтобы работали ссылки SPA
             //
             app.UseMvc(r =>
@@ -192,6 +202,8 @@ namespace DotNetGigs
                     });
                 });
             });
+
+            
 
 
         }

@@ -162,7 +162,10 @@ var FacebookLoginComponent = /** @class */ (function () {
         ;
     }
     FacebookLoginComponent.prototype.launchFbLogin = function () {
-        this.authWindow = window.open('https://www.facebook.com/v2.11/dialog/oauth?&response_type=token&display=popup&client_id=1528751870549294&display=popup&redirect_uri=http://localhost:5000/facebook-auth.html&scope=email', null, 'width=600,height=400');
+        //this.authWindow = window.open('https://www.facebook.com/v2.11/dialog/oauth?&response_type=token&display=popup&client_id=1528751870549294&display=popup&redirect_uri=http://localhost:5000/facebook-auth.html&scope=email',null,'width=600,height=400');    
+        var url = 'https://accounts.google.com/o/oauth2/auth?client_id=313078532206-b01t045uahrop8264g97jrnt1j2dmbrt.apps.googleusercontent.com&redirect_uri=http://localhost:5000/facebook-auth.html&scope=email&response_type=code&access_type=offline';
+        this.authWindow = window.open(url, null, 'width=600,height=400');
+        //https://accounts.google.com/o/oauth2/token?code=&client_id=&client_secret=&redirect_uri=http://localhost:5000/facebook-auth.html&grant_type=authorization_code
     };
     FacebookLoginComponent.prototype.handleMessage = function (event) {
         var _this = this;

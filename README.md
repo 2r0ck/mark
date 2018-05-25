@@ -48,5 +48,20 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
  https://fullstackmark.com/post/13/jwt-authentication-with-aspnet-core-2-web-api-angular-5-net-core-identity-and-facebook-login
 
  
- Marker -> charster:  Create the additional components
+ Marker -> charster:  Create the additional components\
 
+
+Policy-based authorization in ASP.NET Core: 
+https://docs.microsoft.com/en-us/aspnet/core/security/authorization/policies?view=aspnetcore-2.0
+
+Role-based authorization in ASP.NET Core:
+https://docs.microsoft.com/en-us/aspnet/core/security/authorization/roles?view=aspnetcore-2.0
+
+Claims-based authorization in ASP.NET Core
+https://docs.microsoft.com/en-us/aspnet/core/security/authorization/claims?view=aspnetcore-2.0
+ 
+ASP.NET Core + Let's Encrypt
+https://github.com/natemcmaster/LetsEncrypt
+
+Google Auth
+http://ankitsharmablogs.com/authentication-using-google-asp-net-core-2-0/
