@@ -38,22 +38,25 @@ namespace DotNetGigs.Controllers
             var userIdentity = _mapper.Map<AppUser>(model);
             var result = await _userManager.CreateAsync(userIdentity, model.Password);
             
-            if (!result.Succeeded) return new BadRequestObjectResult(Errors.AddErrorsToModelState(result, ModelState));
+            if (!result.Succeeded){
+              return new BadRequestObjectResult(Errors.AddErrorsToModelState(result, ModelState));
+            }
+            _userManager.AddDefaultClaims(userIdentity);
             
-            await _userManager.AddClaimAsync(userIdentity, new Claim(ClaimRepository.ClaimTypes.IdClaim,userIdentity.Id ));
            
             //by default user only view           
-            if(model.Email.Contains("admin"))
-            {
-                 await _userManager.AddClaimAsync(userIdentity, new Claim(ClaimRepository.ClaimTypes.AccessClaim, ClaimRepository.AccessClaimValues.ApiAccess));
-            }else{
-                 await _userManager.AddClaimAsync(userIdentity, new Claim(ClaimRepository.ClaimTypes.AccessClaim, ClaimRepository.AccessClaimValues.View));
-            }
+            // if(model.Email.Contains("admin"))
+            // {
+            //      await _userManager.AddClaimAsync(userIdentity, new Claim(ClaimRepository.ClaimTypes.AccessClaim, ClaimRepository.AccessClaimValues.ApiAccess));
+            // }else{
+            //      await _userManager.AddClaimAsync(userIdentity, new Claim(ClaimRepository.ClaimTypes.AccessClaim, ClaimRepository.AccessClaimValues.View));
+            // }
+
+
             await _appDbContext.JobSeekers.AddAsync(new JobSeeker { IdentityId = userIdentity.Id, Location = model.Location });
             await _appDbContext.SaveChangesAsync();
 
             return new OkResult();
         }
-
     }
 }

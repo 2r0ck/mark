@@ -109,7 +109,7 @@ var routing = _angular_router__WEBPACK_IMPORTED_MODULE_0__["RouterModule"].forCh
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\n    <div class=\"col-md-6\">\n        <a *ngIf=\"!isRequesting\" href=\"javascript:void(0)\" (click)=\"launchFbLogin()\"> <img class=\"img-fluid\" src=\"/assets/facebook-login.png\" /></a>\n        <app-spinner [isRunning]=\"isRequesting\"></app-spinner>\n        <div *ngIf=\"failed\" class=\"alert alert-danger\" role=\"alert\">\n            <p><strong>Oops!</strong> Your facebook login failed.</p>\n            <ul>\n                <li>Error: {{error}}</li>\n                <li>Description: {{errorDescription}}</li>\n            </ul>\n        </div>\n    </div>\n</div>"
+module.exports = "<div class=\"row\">\n    <div class=\"col-md-6\">\n        <a *ngIf=\"!isRequesting\" href=\"javascript:void(0)\" (click)=\"launchFbLogin()\"> <img class=\"img-fluid\" src=\"/assets/google-login.png\" /></a>\n        <app-spinner [isRunning]=\"isRequesting\"></app-spinner>\n        <div *ngIf=\"failed\" class=\"alert alert-danger\" role=\"alert\">\n            <p><strong>Oops!</strong> Your facebook login failed.</p>\n            <ul>\n                <li>Error: {{error}}</li>\n                <li>Description: {{errorDescription}}</li>\n            </ul>\n        </div>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -163,9 +163,11 @@ var FacebookLoginComponent = /** @class */ (function () {
     }
     FacebookLoginComponent.prototype.launchFbLogin = function () {
         //this.authWindow = window.open('https://www.facebook.com/v2.11/dialog/oauth?&response_type=token&display=popup&client_id=1528751870549294&display=popup&redirect_uri=http://localhost:5000/facebook-auth.html&scope=email',null,'width=600,height=400');    
-        var url = 'https://accounts.google.com/o/oauth2/auth?client_id=313078532206-b01t045uahrop8264g97jrnt1j2dmbrt.apps.googleusercontent.com&redirect_uri=http://localhost:5000/facebook-auth.html&scope=email&response_type=code&access_type=offline';
+        var url = 'https://accounts.google.com/o/oauth2/auth?client_id=313078532206-b01t045uahrop8264g97jrnt1j2dmbrt.apps.googleusercontent.com&redirect_uri=http://localhost:5000/facebook-auth.html&scope=profile+email&response_type=code&access_type=offline';
         this.authWindow = window.open(url, null, 'width=600,height=400');
         //https://accounts.google.com/o/oauth2/token?code=&client_id=&client_secret=&redirect_uri=http://localhost:5000/facebook-auth.html&grant_type=authorization_code
+        //GmailService.Scope.GmailReadonly
+        // https://accounts.google.com/o/oauth2/auth?client_id=313078532206-b01t045uahrop8264g97jrnt1j2dmbrt.apps.googleusercontent.com&redirect_uri=http://localhost:5000/facebook-auth.html&scope=profile&response_type=code&access_type=offline
     };
     FacebookLoginComponent.prototype.handleMessage = function (event) {
         var _this = this;
@@ -184,10 +186,10 @@ var FacebookLoginComponent = /** @class */ (function () {
             this.failed = false;
             this.isRequesting = true;
             this.userService.facebookLogin(result.accessToken)
-                .subscribe(function (result) {
+                .subscribe(function (res) {
                 _this.isRequesting = false;
-                if (result) {
-                    _this.router.navigate(['/dashboard/home']);
+                if (res) {
+                    _this.router.navigate(['/home']);
                 }
             }, function (error) {
                 _this.isRequesting = false;
