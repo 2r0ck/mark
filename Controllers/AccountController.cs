@@ -43,7 +43,7 @@ namespace DotNetGigs.Controllers
             }
             _userManager.AddDefaultClaims(userIdentity);
             
-           
+           #region old
             //by default user only view           
             // if(model.Email.Contains("admin"))
             // {
@@ -51,12 +51,11 @@ namespace DotNetGigs.Controllers
             // }else{
             //      await _userManager.AddClaimAsync(userIdentity, new Claim(ClaimRepository.ClaimTypes.AccessClaim, ClaimRepository.AccessClaimValues.View));
             // }
-
-
-            await _appDbContext.JobSeekers.AddAsync(new JobSeeker { IdentityId = userIdentity.Id, Location = model.Location });
-            await _appDbContext.SaveChangesAsync();
-
-            return new OkResult();
+            // await _appDbContext.JobSeekers.AddAsync(new JobSeeker { IdentityId = userIdentity.Id, Location = model.Location });
+            // await _appDbContext.SaveChangesAsync();
+            #endregion
+            
+           return new OkResult();
         }
     }
 }

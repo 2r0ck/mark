@@ -41,7 +41,7 @@ namespace DotNetGigs.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Facebook([FromBody]FacebookAuthViewModel model)
+        public async Task<IActionResult> Google([FromBody]FacebookAuthViewModel model)
         {
             var values = new Dictionary<string, string>();
             values.Add("code", model.AccessToken);
@@ -51,8 +51,10 @@ namespace DotNetGigs.Controllers
             values.Add("grant_type", "authorization_code");
             var appAccessTokenResponse = await Client.PostAsync("https://accounts.google.com/o/oauth2/token", new FormUrlEncodedContent(values));
 
-            if (appAccessTokenResponse.StatusCode == HttpStatusCode.OK)
+            if (appAccessTokenResponse.StatusCode != HttpStatusCode.OK)
             {
+                return BadRequest(Errors.AddErrorToModelState("login_failure", "Invalid google token.", ModelState));
+            }
 
                 var res = await appAccessTokenResponse.Content.ReadAsStringAsync();
                 var appAccessToken = JsonConvert.DeserializeObject<TokenPreseneter>(res);
@@ -74,8 +76,9 @@ namespace DotNetGigs.Controllers
                     };
 
                     var result = await _userManager.CreateAsync(appUser, Convert.ToBase64String(Guid.NewGuid().ToByteArray()).Substring(0, 8));
-                    if (!result.Succeeded) 
+                    if (!result.Succeeded) {
                         return new BadRequestObjectResult(Errors.AddErrorsToModelState(result, ModelState));
+                    }
                     _userManager.AddDefaultClaims(appUser);
                 }
 
@@ -87,11 +90,10 @@ namespace DotNetGigs.Controllers
                     return BadRequest(Errors.AddErrorToModelState("login_failure", "Failed to create local user account.", ModelState));
                 }
 
-                var identity = await _userManager.GetClaimsIdentity(localUser);
+                var claims = await _userManager.GetClaimsAsync(localUser);               
+                var identity = _jwtFactory.GenerateClaimsIdentity(localUser.UserName,claims.ToArray());
                 var jwt = await Tokens.GenerateJwt(identity, _jwtFactory, localUser.UserName, _jwtOptions, new JsonSerializerSettings { Formatting = Formatting.Indented });
                 return new OkObjectResult(jwt);
-            }
-            return BadRequest(Errors.AddErrorToModelState("login_failure", "Invalid google token.", ModelState));
         }
     }
 }

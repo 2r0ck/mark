@@ -19,7 +19,7 @@ export class UserAuthService extends BaseService {
   private test_urlapi = '/data/userid_api';
   private test_urlview = '/data/userid_view';
   private auth_url = '/auth/login';
-  private face_url = '/externalauth/facebook';
+  private face_url = '/externalauth/google';
 
   // Observable navItem source
   private _authNavStatusSource = new BehaviorSubject<boolean>(false);

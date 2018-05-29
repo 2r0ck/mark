@@ -46,6 +46,12 @@ namespace DotNetGigs.Auth
                                new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero))
                               .TotalSeconds);
 
+        public ClaimsIdentity GenerateClaimsIdentity(string userName,Claim[] claims)
+        {            
+            var identity = new ClaimsIdentity(new GenericIdentity(userName, "Token"),claims);
+            return identity;
+        }
+
         public async Task<string> GenerateEncodedToken(string userName, ClaimsIdentity identity)
         {
             var claims = new[]
@@ -69,19 +75,7 @@ namespace DotNetGigs.Auth
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
             return encodedJwt;
-        }
-
-       
-
-         public ClaimsIdentity GenerateClaimsIdentity(string userName, string id)
-        {
-            // return new ClaimsIdentity(new GenericIdentity(userName, "Token"), new[]
-            // {
-            //     new Claim(Consts.ClaimIdRole, id),
-            //     new Claim(Consts.ClaimAdninRole, Consts.AdminRoleClaimValue)
-            // });
-            return null;
-        }
+        }       
 
     }
 }

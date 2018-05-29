@@ -958,7 +958,7 @@ var UserAuthService = /** @class */ (function (_super) {
         _this.test_urlapi = '/data/userid_api';
         _this.test_urlview = '/data/userid_view';
         _this.auth_url = '/auth/login';
-        _this.face_url = '/externalauth/facebook';
+        _this.face_url = '/externalauth/google';
         // Observable navItem source
         _this._authNavStatusSource = new rxjs__WEBPACK_IMPORTED_MODULE_3__["BehaviorSubject"](false);
         // Observable navItem stream
