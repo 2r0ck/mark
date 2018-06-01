@@ -13,7 +13,7 @@ import { TestData, AuthResponse } from "../models/csmodels";
 })
 export class UserAuthService extends BaseService {
 
-  private baseUrl = 'http://localhost:5000/api';
+  private baseUrl = '/api'; //http://localhost:5000 
   private account_url = '/account';
   private test_url = '/data/publicData';
   private test_urlapi = '/data/userid_api';

@@ -5,7 +5,7 @@
     "tasks": [{
         "taskName": "build",
         "args": [
-            "${workspaceRoot}/DotNetGigs.csproj"
+            "${workspaceRoot}/DotNetGigs.csproj" 
         ],
         "problemMatcher": "$msCompile"
     }]

@@ -19,7 +19,10 @@ namespace DotNetGigs.Models
         public string AuthUri { get; set; }
 
         [JsonProperty("token_uri")]
-        public string TokenUri { get; set; }
+        public string TokenUri { get; set; }        
+        
+        [JsonProperty("info_url")]
+        public string InfoUri { get; set; }
 
         [JsonProperty("auth_provider_x509_cert_url")]
         public string AuthProviderX509CertUrl { get; set; }
