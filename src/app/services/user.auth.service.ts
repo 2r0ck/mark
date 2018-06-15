@@ -7,6 +7,8 @@ import { Observable, BehaviorSubject, of } from 'rxjs';
 import { UserRegistration } from '../models/user.registration';
 import { catchError, map, tap } from 'rxjs/operators';
 import { TestData, AuthResponse } from "../models/csmodels";
+import { ValResponse } from '../models/valresponse';
+import { OrderViewModel } from '../models/orderviewmodel';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +22,8 @@ export class UserAuthService extends BaseService {
   private test_urlview = '/data/userid_view';
   private auth_url = '/auth/login';
   private face_url = '/externalauth/google';
+
+  private data_url = '/data/getDataList';
 
   // Observable navItem source
   private _authNavStatusSource = new BehaviorSubject<boolean>(false);
@@ -71,6 +75,16 @@ export class UserAuthService extends BaseService {
     };
 
 
+  }
+
+  public getOrders(): Observable<OrderViewModel[]> {
+    return this.httpClient.get<ValResponse<OrderViewModel[]>>(this.baseUrl + this.data_url, this.getRequestOptions(true))
+      .pipe(
+        tap(r => console.log(`get result->` + r)),
+        map(r => {
+          console.log("map");
+          return r.value;}),
+      catchError(super.handleOperationError<OrderViewModel[]>(null)));
   }
 
 

@@ -1,10 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TableviewComponent } from './tableview/tableview.component';
+import { dataRouting } from './data.routing';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    dataRouting  
   ],
-  declarations: []
+  declarations: [TableviewComponent]
 })
 export class DataModule { }

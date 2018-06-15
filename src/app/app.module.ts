@@ -10,9 +10,7 @@ import { routing } from './app.routing';
 import { AccountModule } from './account/account.module';
 import { NotfoundComponent } from './notfound/notfound.component';
 import { FormsModule } from '@angular/forms';
- 
-
-
+import { DataModule } from './data/data.module';
 
 @NgModule({
   declarations: [
@@ -20,13 +18,14 @@ import { FormsModule } from '@angular/forms';
     HeaderComponent,
     HomeComponent,
     BusyComponent,
-    NotfoundComponent
+    NotfoundComponent,
   
   ],
   imports: [
     BrowserModule,
     routing,
     AccountModule,
+    DataModule,
     HttpClientModule,
     FormsModule
   ],

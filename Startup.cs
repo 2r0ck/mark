@@ -172,6 +172,8 @@ namespace DotNetGigs
                     {
                         //context.Response.AddApplicationError(error.Error.Message);
                         //await context.Response.WriteAsync(error.Error.Message).ConfigureAwait(false);
+                       // context.Response.AddApplicationError(error.Error.Message);
+                        await context.Response.WriteAsync(error.Error.Message).ConfigureAwait(false);
                     }
                 });
             });

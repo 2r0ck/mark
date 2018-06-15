@@ -22,6 +22,10 @@
                 <a class="nav-link" (click)="logout()" href="#">Logoff</a>
             </li>
 
+            <li class="nav-item" *ngIf="status">
+                <a class="nav-link" routerLinkActive="active" routerLink="/tableview">Table View</a>
+            </li>
+
             <li class="nav-item">
                 <a class="nav-link" routerLinkActive="active" routerLink="/facebook-login">Facebook signup/login</a>
             </li>

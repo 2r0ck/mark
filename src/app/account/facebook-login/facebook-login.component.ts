@@ -17,7 +17,7 @@ export class FacebookLoginComponent {
 
   launchFbLogin() {
     //this.authWindow = window.open('https://www.facebook.com/v2.11/dialog/oauth?&response_type=token&display=popup&client_id=1528751870549294&display=popup&redirect_uri=http://localhost:5000/facebook-auth.html&scope=email',null,'width=600,height=400');    
-
+    //todo: что делать со строкой
     let url = 'https://accounts.google.com/o/oauth2/auth?client_id=313078532206-b01t045uahrop8264g97jrnt1j2dmbrt.apps.googleusercontent.com&redirect_uri=http://localhost:5000/facebook-auth.html&scope=profile+email&response_type=code&access_type=offline';
     this.authWindow = window.open(url, null, 'width=600,height=400');
 
@@ -40,6 +40,7 @@ export class FacebookLoginComponent {
   handleMessage(event: Event) {
     const message = event as MessageEvent;
     // Only trust messages from the below origin.
+    //todo: что делать с адресом?
     if (message.origin !== "http://localhost:5000") return;
 
     this.authWindow.close();

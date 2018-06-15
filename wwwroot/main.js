@@ -163,6 +163,7 @@ var FacebookLoginComponent = /** @class */ (function () {
     }
     FacebookLoginComponent.prototype.launchFbLogin = function () {
         //this.authWindow = window.open('https://www.facebook.com/v2.11/dialog/oauth?&response_type=token&display=popup&client_id=1528751870549294&display=popup&redirect_uri=http://localhost:5000/facebook-auth.html&scope=email',null,'width=600,height=400');    
+        //todo: ��� ������ �� �������
         var url = 'https://accounts.google.com/o/oauth2/auth?client_id=313078532206-b01t045uahrop8264g97jrnt1j2dmbrt.apps.googleusercontent.com&redirect_uri=http://localhost:5000/facebook-auth.html&scope=profile+email&response_type=code&access_type=offline';
         this.authWindow = window.open(url, null, 'width=600,height=400');
         //https://accounts.google.com/o/oauth2/token?code=&client_id=&client_secret=&redirect_uri=http://localhost:5000/facebook-auth.html&grant_type=authorization_code
@@ -173,6 +174,7 @@ var FacebookLoginComponent = /** @class */ (function () {
         var _this = this;
         var message = event;
         // Only trust messages from the below origin.
+        //todo: ��� ������ � �������?
         if (message.origin !== "http://localhost:5000")
             return;
         this.authWindow.close();
@@ -486,12 +488,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _account_account_module__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./account/account.module */ "./src/app/account/account.module.ts");
 /* harmony import */ var _notfound_notfound_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./notfound/notfound.component */ "./src/app/notfound/notfound.component.ts");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _data_data_module__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./data/data.module */ "./src/app/data/data.module.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -513,12 +517,13 @@ var AppModule = /** @class */ (function () {
                 _header_header_component__WEBPACK_IMPORTED_MODULE_4__["HeaderComponent"],
                 _home_home_component__WEBPACK_IMPORTED_MODULE_5__["HomeComponent"],
                 _busy_busy_component__WEBPACK_IMPORTED_MODULE_6__["BusyComponent"],
-                _notfound_notfound_component__WEBPACK_IMPORTED_MODULE_9__["NotfoundComponent"]
+                _notfound_notfound_component__WEBPACK_IMPORTED_MODULE_9__["NotfoundComponent"],
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
                 _app_routing__WEBPACK_IMPORTED_MODULE_7__["routing"],
                 _account_account_module__WEBPACK_IMPORTED_MODULE_8__["AccountModule"],
+                _data_data_module__WEBPACK_IMPORTED_MODULE_11__["DataModule"],
                 _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClientModule"],
                 _angular_forms__WEBPACK_IMPORTED_MODULE_10__["FormsModule"]
             ],
@@ -622,6 +627,141 @@ var BusyComponent = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/data/data.module.ts":
+/*!*************************************!*\
+  !*** ./src/app/data/data.module.ts ***!
+  \*************************************/
+/*! exports provided: DataModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DataModule", function() { return DataModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _tableview_tableview_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./tableview/tableview.component */ "./src/app/data/tableview/tableview.component.ts");
+/* harmony import */ var _data_routing__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./data.routing */ "./src/app/data/data.routing.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+
+var DataModule = /** @class */ (function () {
+    function DataModule() {
+    }
+    DataModule = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"])({
+            imports: [
+                _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"],
+                _data_routing__WEBPACK_IMPORTED_MODULE_3__["dataRouting"]
+            ],
+            declarations: [_tableview_tableview_component__WEBPACK_IMPORTED_MODULE_2__["TableviewComponent"]]
+        })
+    ], DataModule);
+    return DataModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/data/data.routing.ts":
+/*!**************************************!*\
+  !*** ./src/app/data/data.routing.ts ***!
+  \**************************************/
+/*! exports provided: dataRouting */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "dataRouting", function() { return dataRouting; });
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _tableview_tableview_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tableview/tableview.component */ "./src/app/data/tableview/tableview.component.ts");
+
+
+var dataRouting = _angular_router__WEBPACK_IMPORTED_MODULE_0__["RouterModule"].forChild([
+    { path: 'tableview', component: _tableview_tableview_component__WEBPACK_IMPORTED_MODULE_1__["TableviewComponent"] }
+]);
+
+
+/***/ }),
+
+/***/ "./src/app/data/tableview/tableview.component.html":
+/*!*********************************************************!*\
+  !*** ./src/app/data/tableview/tableview.component.html ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n    tableview works!\n    <button class=\"btn btn-default\" (click)=\"getData()\">test get data </button>\n</p>"
+
+/***/ }),
+
+/***/ "./src/app/data/tableview/tableview.component.scss":
+/*!*********************************************************!*\
+  !*** ./src/app/data/tableview/tableview.component.scss ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ""
+
+/***/ }),
+
+/***/ "./src/app/data/tableview/tableview.component.ts":
+/*!*******************************************************!*\
+  !*** ./src/app/data/tableview/tableview.component.ts ***!
+  \*******************************************************/
+/*! exports provided: TableviewComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TableviewComponent", function() { return TableviewComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _services_user_auth_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/user.auth.service */ "./src/app/services/user.auth.service.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var TableviewComponent = /** @class */ (function () {
+    function TableviewComponent(uservice) {
+        this.uservice = uservice;
+    }
+    TableviewComponent.prototype.ngOnInit = function () {
+    };
+    TableviewComponent.prototype.getData = function () {
+        this.uservice.getOrders().subscribe(function (x) {
+            debugger;
+        });
+    };
+    TableviewComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-tableview',
+            template: __webpack_require__(/*! ./tableview.component.html */ "./src/app/data/tableview/tableview.component.html"),
+            styles: [__webpack_require__(/*! ./tableview.component.scss */ "./src/app/data/tableview/tableview.component.scss")]
+        }),
+        __metadata("design:paramtypes", [_services_user_auth_service__WEBPACK_IMPORTED_MODULE_1__["UserAuthService"]])
+    ], TableviewComponent);
+    return TableviewComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/header/header.component.html":
 /*!**********************************************!*\
   !*** ./src/app/header/header.component.html ***!
@@ -629,7 +769,7 @@ var BusyComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-expand-lg navbar-light bg-light\">\n    <a class=\"navbar-brand\" href=\"#\">Navbar</a>\n    <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarSupportedContent\" aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n\n    <div class=\"navbar navbar-expand-md navbar-dark fixed-top bg-dark\" id=\"navbarSupportedContent\">\n        <ul class=\"navbar-nav mr-auto\">\n            <li class=\"nav-item active\">\n                <a class=\"nav-link\" routerLinkActive=\"active\" routerLink=\"/home\">dotnetGigs <span class=\"sr-only\">(current)</span></a>\n            </li>\n\n            <li class=\"nav-item\" *ngIf=\"!status\">\n                <a class=\"nav-link\" routerLinkActive=\"active\" routerLink=\"/login\">login</a>\n            </li>\n\n            <li class=\"nav-item\" *ngIf=\"!status\">\n                <a class=\"nav-link\" routerLinkActive=\"active\" routerLink=\"/register\">register</a>\n            </li>\n\n            <li class=\"nav-item\" *ngIf=\"status\">\n                <a class=\"nav-link\" (click)=\"logout()\" href=\"#\">Logoff</a>\n            </li>\n\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" routerLinkActive=\"active\" routerLink=\"/facebook-login\">Facebook signup/login</a>\n            </li>\n\n        </ul>\n        <form class=\"form-inline my-2 my-lg-0\">\n            <input class=\"form-control mr-sm-2\" type=\"search\" placeholder=\"Search\" aria-label=\"Search\">\n            <button class=\"btn btn-outline-success my-2 my-sm-0\" type=\"submit\">Search</button>\n        </form>\n    </div>\n</nav>"
+module.exports = "<nav class=\"navbar navbar-expand-lg navbar-light bg-light\">\n    <a class=\"navbar-brand\" href=\"#\">Navbar</a>\n    <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarSupportedContent\" aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n\n    <div class=\"navbar navbar-expand-md navbar-dark fixed-top bg-dark\" id=\"navbarSupportedContent\">\n        <ul class=\"navbar-nav mr-auto\">\n            <li class=\"nav-item active\">\n                <a class=\"nav-link\" routerLinkActive=\"active\" routerLink=\"/home\">dotnetGigs <span class=\"sr-only\">(current)</span></a>\n            </li>\n\n            <li class=\"nav-item\" *ngIf=\"!status\">\n                <a class=\"nav-link\" routerLinkActive=\"active\" routerLink=\"/login\">login</a>\n            </li>\n\n            <li class=\"nav-item\" *ngIf=\"!status\">\n                <a class=\"nav-link\" routerLinkActive=\"active\" routerLink=\"/register\">register</a>\n            </li>\n\n            <li class=\"nav-item\" *ngIf=\"status\">\n                <a class=\"nav-link\" (click)=\"logout()\" href=\"#\">Logoff</a>\n            </li>\n\n            <li class=\"nav-item\" *ngIf=\"status\">\n                <a class=\"nav-link\" routerLinkActive=\"active\" routerLink=\"/tableview\">Table View</a>\n            </li>\n\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" routerLinkActive=\"active\" routerLink=\"/facebook-login\">Facebook signup/login</a>\n            </li>\n\n        </ul>\n        <form class=\"form-inline my-2 my-lg-0\">\n            <input class=\"form-control mr-sm-2\" type=\"search\" placeholder=\"Search\" aria-label=\"Search\">\n            <button class=\"btn btn-outline-success my-2 my-sm-0\" type=\"submit\">Search</button>\n        </form>\n    </div>\n</nav>"
 
 /***/ }),
 
@@ -959,6 +1099,7 @@ var UserAuthService = /** @class */ (function (_super) {
         _this.test_urlview = '/data/userid_view';
         _this.auth_url = '/auth/login';
         _this.face_url = '/externalauth/google';
+        _this.data_url = '/data/getDataList';
         // Observable navItem source
         _this._authNavStatusSource = new rxjs__WEBPACK_IMPORTED_MODULE_3__["BehaviorSubject"](false);
         // Observable navItem stream
@@ -997,6 +1138,13 @@ var UserAuthService = /** @class */ (function (_super) {
                 'Content-Type': 'application/json'
             })
         };
+    };
+    UserAuthService.prototype.getOrders = function () {
+        return this.httpClient.get(this.baseUrl + this.data_url, this.getRequestOptions(true))
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["tap"])(function (r) { return console.log("get result->" + r); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["map"])(function (r) {
+            console.log("map");
+            return r.value;
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(_super.prototype.handleOperationError.call(this, null)));
     };
     //  register(email: string, password: string, firstName: string, lastName: string,location: string): Observable<UserRegistration> {
     //   let body = JSON.stringify({ email, password, firstName, lastName, location });

@@ -11,5 +11,6 @@ namespace DotNetGigs.Data
         }
 
          public DbSet<JobSeeker> JobSeekers { get; set; }
+         public DbSet<Order> Orders {get;set;}
     }
 }

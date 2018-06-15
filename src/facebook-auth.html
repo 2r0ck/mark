@@ -23,7 +23,7 @@
             message.error = getParameterByName("error");
             message.errorDescription = getParameterByName("error_description");
         }
-        window.opener.postMessage(JSON.stringify(message), window.location.host);
+        window.opener.postMessage(JSON.stringify(message), window.location.origin);
     </script>
 </body>
 
